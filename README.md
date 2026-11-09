@@ -9,6 +9,8 @@ Your group works as DevOps consultants for Meridian. Right now the shop is built
 - Lists books, with a genre filter
 - Adds books to a basket
 - Works out the basket total, with 10% off when you buy 3 or more books
+- Includes a secure, simulated payment checkout flow for card payments
+- Provides a refreshed storefront layout for a better customer experience
 
 ## Run it
 

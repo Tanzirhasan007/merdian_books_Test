@@ -4,38 +4,111 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Meridian Books</title>
+  <meta name="description" content="Meridian Books online shop with a modern checkout experience.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Meridian Books</h1>
-    <p>Independent books, delivered.</p>
+  <header class="site-header">
+    <nav class="container navbar" aria-label="Main navigation">
+      <div class="brand-block">
+        <p class="eyebrow">Independent bookseller</p>
+        <h1>Meridian Books</h1>
+      </div>
+
+      <div class="nav-links" aria-label="Navigation links">
+        <a href="#catalogue">Shop</a>
+        <a href="#offer">Offers</a>
+        <a href="#basket-heading">Basket</a>
+        <a href="#checkout-form">Checkout</a>
+      </div>
+
+      <div class="header-tagline">Books that feel like a good idea.</div>
+    </nav>
   </header>
 
-  <main>
-    <section aria-labelledby="offer">
-      <h2 id="offer">Multi-buy offer</h2>
-      <p>Buy 3 or more books and get 10% off your order.</p>
+  <main class="container page-shell">
+    <section class="promo-card" aria-labelledby="offer">
+      <div>
+        <p class="eyebrow accent">Member offer</p>
+        <h2 id="offer">Buy 3 or more books and save 10%</h2>
+      </div>
+      <button type="button" class="secondary-button" data-scroll-target="catalogue">Browse the shelves</button>
     </section>
 
-    <section aria-labelledby="catalogue">
-      <h2 id="catalogue">Our books</h2>
-      <label for="genre">Filter by genre</label>
-      <select id="genre">
-        <option value="">All genres</option>
-      </select>
-      <ul id="books" class="books"></ul>
-    </section>
+    <div class="content-grid">
+      <section class="catalog-panel" aria-labelledby="catalogue">
+        <div class="section-header">
+          <h2 id="catalogue">Our books</h2>
+          <label class="filter-label" for="genre">
+            <span>Filter</span>
+            <select id="genre">
+              <option value="">All genres</option>
+            </select>
+          </label>
+        </div>
+        <div id="books" class="books-grid" aria-live="polite"></div>
+      </section>
 
-    <section aria-labelledby="basket-heading">
-      <h2 id="basket-heading">Your basket</h2>
-      <ul id="basket"></ul>
-      <p id="summary">Your basket is empty.</p>
-    </section>
+      <aside class="basket-panel" aria-labelledby="basket-heading">
+        <div class="section-header basket-header">
+          <h2 id="basket-heading">Your basket</h2>
+          <span id="basket-count" class="basket-count">0 items</span>
+        </div>
+
+        <ul id="basket" class="basket-list" aria-live="polite"></ul>
+        <div id="summary" class="summary-box">Your basket is empty.</div>
+
+        <button id="checkout-toggle" class="primary-button" type="button" disabled>
+          Proceed to checkout
+        </button>
+
+        <form id="checkout-form" class="checkout-form hidden" novalidate>
+          <h3>Secure checkout</h3>
+
+          <label>
+            Full name
+            <input type="text" name="name" placeholder="Alex Morgan" required>
+          </label>
+
+          <label>
+            Email address
+            <input type="email" name="email" placeholder="alex@example.com" required>
+          </label>
+
+          <label>
+            Cardholder name
+            <input type="text" name="cardholder" placeholder="ALEX MORGAN" required>
+          </label>
+
+          <label>
+            Card number
+            <input type="text" name="cardNumber" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242" required>
+          </label>
+
+          <div class="form-row">
+            <label>
+              Expiry
+              <input type="text" name="expiry" maxlength="5" placeholder="11/29" required>
+            </label>
+            <label>
+              CVC
+              <input type="text" name="cvc" inputmode="numeric" maxlength="4" placeholder="123" required>
+            </label>
+          </div>
+
+          <button type="submit" class="primary-button checkout-submit">Pay now</button>
+        </form>
+
+        <p id="checkout-message" class="checkout-message" aria-live="polite"></p>
+      </aside>
+    </div>
   </main>
 
-  <footer>
-    <p>Meridian Books · Starter application for LD6049 DevOps Principles</p>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>Meridian Books</span>
+      <span>Fast dispatch · Secure checkout</span>
+    </div>
   </footer>
 
   <script src="app.js"></script>

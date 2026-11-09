@@ -7,5 +7,5 @@ module.exports = {
 
   // Payment provider settings (sandbox)
   paymentProvider: 'meridian-pay',
-  payment_api_key: 'mbpay_live_7Qf2kXr9LmA4tZ8vN1cW6yH3pJ5sD0eB',
+  paymentApiKey: process.env.MERIDIAN_PAYMENT_API_KEY || 'demo_sandbox_key',
 };

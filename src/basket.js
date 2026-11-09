@@ -19,10 +19,11 @@ function subtotal(items, books) {
 }
 
 function total(items, books) {
+  const count = itemCount(items);
   const sub = subtotal(items, books);
-  const discount = itemCount(items) > MULTI_BUY_THRESHOLD ? sub * MULTI_BUY_DISCOUNT : 0;
+  const discount = count >= MULTI_BUY_THRESHOLD ? sub * MULTI_BUY_DISCOUNT : 0;
   return {
-    items: itemCount(items),
+    items: count,
     subtotal: _.round(sub, 2),
     discount: _.round(discount, 2),
     total: _.round(sub - discount, 2),
