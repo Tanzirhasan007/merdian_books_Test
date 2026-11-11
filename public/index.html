@@ -46,6 +46,26 @@
             </select>
           </label>
         </div>
+
+        <div class="catalog-toolbar" aria-label="Book search and sorting controls">
+          <label class="search-field" for="book-search">
+            <span>Search</span>
+            <input id="book-search" type="search" placeholder="Search by title, author or genre" autocomplete="off">
+          </label>
+
+          <label class="sort-field" for="sort-books">
+            <span>Sort</span>
+            <select id="sort-books">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: low to high</option>
+              <option value="price-high">Price: high to low</option>
+              <option value="title-a-z">Title: A–Z</option>
+            </select>
+          </label>
+
+          <button id="clear-filters" type="button" class="clear-button">Clear filters</button>
+        </div>
+
         <div id="books" class="books-grid" aria-live="polite"></div>
       </section>
 

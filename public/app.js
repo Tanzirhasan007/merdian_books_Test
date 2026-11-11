@@ -1,5 +1,8 @@
 const booksList = document.getElementById('books');
 const genreSelect = document.getElementById('genre');
+const bookSearch = document.getElementById('book-search');
+const sortBooks = document.getElementById('sort-books');
+const clearFiltersButton = document.getElementById('clear-filters');
 const basketList = document.getElementById('basket');
 const summary = document.getElementById('summary');
 const basketCount = document.getElementById('basket-count');
@@ -8,6 +11,7 @@ const checkoutMessage = document.getElementById('checkout-message');
 const checkoutToggle = document.getElementById('checkout-toggle');
 
 const basket = new Map(); // bookId -> { book, quantity }
+let allBooks = [];
 
 function formatPrice(value) {
   return new Intl.NumberFormat('en-GB', {
@@ -35,11 +39,55 @@ function updateCheckoutState() {
   }
 }
 
-async function loadBooks(genre = '') {
-  const url = genre ? `/api/books?genre=${encodeURIComponent(genre)}` : '/api/books';
-  const res = await fetch(url);
-  const books = await res.json();
+function getVisibleBooks() {
+  const searchValue = bookSearch.value.trim().toLowerCase();
+  const selectedGenre = genreSelect.value;
+
+  let filtered = [...allBooks];
+
+  if (selectedGenre) {
+    filtered = filtered.filter((book) => book.genre === selectedGenre);
+  }
+
+  if (searchValue) {
+    filtered = filtered.filter((book) => {
+      const searchableText = `${book.title} ${book.author} ${book.genre}`.toLowerCase();
+      return searchableText.includes(searchValue);
+    });
+  }
+
+  const sortValue = sortBooks.value;
+  switch (sortValue) {
+    case 'price-low':
+      filtered.sort((a, b) => a.price - b.price);
+      break;
+    case 'price-high':
+      filtered.sort((a, b) => b.price - a.price);
+      break;
+    case 'title-a-z':
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    default:
+      filtered.sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0));
+      break;
+  }
+
+  return filtered;
+}
+
+function renderBooks(books) {
   booksList.innerHTML = '';
+
+  if (books.length === 0) {
+    const emptyState = document.createElement('div');
+    emptyState.className = 'empty-state';
+    emptyState.innerHTML = `
+      <h3>No books match your search</h3>
+      <p>Try a different genre, keyword or reset the filters.</p>
+    `;
+    booksList.appendChild(emptyState);
+    return;
+  }
 
   books.forEach((book) => {
     const card = document.createElement('article');
@@ -66,8 +114,18 @@ async function loadBooks(genre = '') {
     card.appendChild(button);
     booksList.appendChild(card);
   });
+}
 
-  return books;
+function updateBookList() {
+  renderBooks(getVisibleBooks());
+}
+
+async function loadBooks(genre = '') {
+  const url = genre ? `/api/books?genre=${encodeURIComponent(genre)}` : '/api/books';
+  const res = await fetch(url);
+  allBooks = await res.json();
+  updateBookList();
+  return allBooks;
 }
 
 async function loadGenres() {
@@ -266,7 +324,15 @@ document.querySelector('[data-scroll-target="catalogue"]').addEventListener('cli
   document.getElementById('catalogue').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
-genreSelect.addEventListener('change', () => loadBooks(genreSelect.value));
+genreSelect.addEventListener('change', () => updateBookList());
+bookSearch.addEventListener('input', updateBookList);
+sortBooks.addEventListener('change', updateBookList);
+clearFiltersButton.addEventListener('click', () => {
+  genreSelect.value = '';
+  bookSearch.value = '';
+  sortBooks.value = 'featured';
+  updateBookList();
+});
 
 renderBasket();
 loadGenres();
